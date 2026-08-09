@@ -1,0 +1,9 @@
+customer_id,first_name,last_name,email,phone,country,signup_date,annual_spend
+101,John,Doe,JOHN@example.com,555-0100,USA,2022-03-15,1200.50
+102,Jane,Smith,jane.smith@example.com,,CAN,2022/07/22,950.00
+101,John,Doe,JOHN@example.com,555-0100,USA,2022-03-15,1200.50
+103,,Brown,brown.j@domain,555-0102,UK,2023-01-10,400.00
+104,Alice,Jones,alice.jones@example.com,555-0103,AUS,2023-05-05,
+105,BOB,Wilson,BOB.WILSON@EXAMPLE.COM,555-0104,USA,05/18/2023,1800.75
+106,Sarah,Lee,sarah.lee@example.com,555-0105,CAN,2023-06-20,-250.00
+107,Michael,Davis,michael.davis@example.com,555-0106,USA,2023-07-15,2100.00
