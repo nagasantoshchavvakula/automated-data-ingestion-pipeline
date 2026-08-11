@@ -5,6 +5,27 @@ import pandas as pd
 
 logger = logging.getLogger(__name__)
 
+# ---------------------------------------------------------
+# Synthetic mapping for JSONPlaceholder userId
+# ---------------------------------------------------------
+# JSONPlaceholder provides userId values from 1-10.
+# Our customers table uses different business IDs.
+#
+# This mapping is intentionally deterministic because
+# JSONPlaceholder is only being used as a mock orders API
+# for this lab.
+CUSTOMER_ID_MAP = {
+    1: 101,
+    2: 102,
+    3: 104,
+    4: 105,
+    5: 107,
+    6: 999,
+    7: 101,
+    8: 102,
+    9: 104,
+    10: 105,
+}
 
 def transform_orders(df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -68,7 +89,15 @@ def transform_orders(df: pd.DataFrame) -> pd.DataFrame:
             df["customer_id"],
             errors="coerce"
         )
+    
+    # ---------------------------------------------------------
+    # 5. Map API userId to database customer_id
+    # ---------------------------------------------------------
 
+    df["customer_id"] = df["customer_id"].map(
+        CUSTOMER_ID_MAP
+    )
+    
     # ---------------------------------------------------------
     # 5. Clean title and body
     # ---------------------------------------------------------
@@ -93,24 +122,37 @@ def transform_orders(df: pd.DataFrame) -> pd.DataFrame:
 
     df = df.dropna(
         subset=["order_id", "customer_id"]
-    )
+    ).copy()
+    
+    removed_count = before - len(df)
 
     logger.info(
         "Orders removed for missing IDs | count=%d",
-        before - len(df)
+        removed_count
     )
+    
+    # ---------------------------------------------------------
+    # 9. Convert order_id to integer
+    # ---------------------------------------------------------
+
+    df["order_id"] = df["order_id"].astype(int)
+
+    df["customer_id"] = df["customer_id"].astype(int)
 
     # ---------------------------------------------------------
-    # 7. Create synthetic quantity
+    # 10. Create synthetic quantity
     # ---------------------------------------------------------
+
     # JSONPlaceholder does not provide quantity.
-    # We use 1 as a controlled lab default.
+    # We use 1 as the controlled lab default.
+
     df["quantity"] = 1
 
     # ---------------------------------------------------------
     # 8. Create synthetic order date
     # ---------------------------------------------------------
-    # The mock API doesn't provide a real order timestamp.
+    # JSONPlaceholder does not provide an order timestamp.
+    # Use the current UTC timestamp for this lab.
     df["order_date"] = pd.Timestamp.now(tz="UTC")
 
     # ---------------------------------------------------------
