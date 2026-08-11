@@ -124,6 +124,17 @@ class Order(Base):
         Text,
         nullable=True,
     )
+    
+    quantity = Column(
+        Integer,
+        nullable=False,
+        default=1,
+    )
+
+    order_date = Column(
+        DateTime,
+        nullable=False,
+    )
 
 # ---------------------------------------------------------
 # Initialize database schema
