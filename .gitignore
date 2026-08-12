@@ -19,6 +19,7 @@ venv/
 .venv/
 env/
 ENV/
+airflow_venv/
 
 # ======================================================
 # Environment Variables
